@@ -3,6 +3,7 @@ package com.sarmad.task.security.serviceImpl;
 import com.sarmad.task.security.common.UserPrincipal;
 import com.sarmad.task.security.service.JwtService;
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -11,8 +12,10 @@ import java.util.Date;
 @Component
 public class JwtServiceImpl implements JwtService {
 
+    @Value("${project.security.jwtSecret}")
     private String jwtSecret;
 
+    @Value("${project.security.jwtExpiration}")
     private Long jwtExpiration;
 
     @Override
