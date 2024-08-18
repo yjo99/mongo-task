@@ -1,16 +1,11 @@
 package com.sarmad.task.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
+
 
 import java.util.Locale;
 
@@ -44,6 +39,4 @@ public class GlobalExceptionHandler {
         log.error( "Thread [" + Thread.currentThread().getId() + "] | Internal Authentication Service Exception : " + ex);
         return ResponseEntity.ok(ex.getMessage());
     }
-
-
 }
