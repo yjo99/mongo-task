@@ -8,6 +8,8 @@ import com.sarmad.task.bussiness.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin
@@ -21,7 +23,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AppResponse<LoginResponseDto> loginUser(@RequestBody LoginDto loginDto) {
+    public AppResponse<LoginResponseDto> loginUser(@Valid @RequestBody LoginDto loginDto) {
         return authService.loginUser(loginDto);
     }
 }
