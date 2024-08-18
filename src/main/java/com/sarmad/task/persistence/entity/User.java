@@ -11,14 +11,17 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "USERS")
 public class User {
     @Id
-    private String id;
+    private String user_id;
 
-    @Field("name")
-    private String name;
+    @Field("first_name")
+    private String firstName;
 
-    @Field("email")
-    private String email;
+    @Field("second_name")
+    private String secondName;
 
-    @Field("phone")
-    private String phone;
+    @Field("login_id")
+    private String loginID;
+
+    @Field("password")
+    private String password;
 }

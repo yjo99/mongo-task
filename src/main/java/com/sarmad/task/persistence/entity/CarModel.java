@@ -12,14 +12,14 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "CAR_MODELS")
 public class CarModel {
     @Id
-    private String id;
+    private String carModelId;
 
     @Field("model_name")
     private String modelName;
 
-    @Field("manufacturer")
-    private String manufacturer;
+    @Field("manufacturer_year")
+    private String manufacturer_year;
 
-    @Field("year")
-    private int year;
+    @Field("type")
+    private String type;
 }

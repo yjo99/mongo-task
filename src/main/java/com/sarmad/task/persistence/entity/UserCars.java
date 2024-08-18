@@ -21,9 +21,10 @@ public class UserCars {
     @Field("car_model_id")
     private String carModelId;
 
-    @Field("purchase_date")
-    private Date purchaseDate;
+    @Field("color")
+    private String color;
 
-    @Field("license_plate")
-    private String licensePlate;
+    @Field("car_plate_number")
+    private String carPlateNumber;
+
 }
