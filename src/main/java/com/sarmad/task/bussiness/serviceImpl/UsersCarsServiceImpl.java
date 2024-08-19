@@ -1,12 +1,15 @@
 package com.sarmad.task.bussiness.serviceImpl;
 
 import com.sarmad.task.bussiness.dto.AppResponse;
+import com.sarmad.task.bussiness.dto.CarModelDto;
 import com.sarmad.task.bussiness.dto.UserCarsDto;
 import com.sarmad.task.bussiness.dto.UserCarsSearchDto;
 import com.sarmad.task.bussiness.service.UserCarsService;
 import com.sarmad.task.exception.CustomException;
+import com.sarmad.task.persistence.entity.CarModel;
 import com.sarmad.task.persistence.entity.User;
 import com.sarmad.task.persistence.entity.UserCars;
+import com.sarmad.task.persistence.repository.CarModelRedisRepo;
 import com.sarmad.task.persistence.repository.CarModelRepository;
 import com.sarmad.task.persistence.repository.UserCarRepository;
 import com.sarmad.task.persistence.repository.UserRepository;
@@ -26,8 +29,12 @@ public class UsersCarsServiceImpl implements UserCarsService {
 
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private ModelMapper modelMapper;
+
+
+
 
 
     @Cacheable(value = "userCars", key = "#userCarsSearchDto.firstName + '-' + #userCarsSearchDto.secondName + '-' + #userCarsSearchDto.carPlateNumber")
@@ -67,4 +74,8 @@ public class UsersCarsServiceImpl implements UserCarsService {
                 .map(userCar -> modelMapper.map(userCar, UserCarsDto.class))
                 .collect(Collectors.toList());
     }
+
+
+
+
 }

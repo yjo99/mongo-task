@@ -38,7 +38,7 @@ public class DataServiceImpl implements DataService {
             carModel.setCarModelId(String.valueOf(i));
             carModel.setModelName("Model" + i);
             carModel.setType("Type" + (i % 5));
-            carModel.setManufacturer_year(String.valueOf(2000 + (i % 24)));
+            carModel.setManufacturerYear(String.valueOf(2000 + (i % 24)));
             carModels.add(carModel);
         }
         carModelRepository.saveAll(carModels);

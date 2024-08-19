@@ -18,7 +18,7 @@ public class CarModel {
     private String modelName;
 
     @Field("manufacturer_year")
-    private String manufacturer_year;
+    private String manufacturerYear;
 
     @Field("type")
     private String type;
