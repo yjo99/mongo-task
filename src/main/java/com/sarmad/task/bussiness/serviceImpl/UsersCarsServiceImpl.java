@@ -4,22 +4,19 @@ import com.sarmad.task.bussiness.dto.AppResponse;
 import com.sarmad.task.bussiness.dto.CarModelDto;
 import com.sarmad.task.bussiness.dto.UserCarsDto;
 import com.sarmad.task.bussiness.dto.UserCarsSearchDto;
+import com.sarmad.task.bussiness.service.CarModelService;
 import com.sarmad.task.bussiness.service.UserCarsService;
 import com.sarmad.task.exception.CustomException;
-import com.sarmad.task.persistence.entity.CarModel;
 import com.sarmad.task.persistence.entity.User;
 import com.sarmad.task.persistence.entity.UserCars;
-import com.sarmad.task.persistence.repository.CarModelRedisRepo;
-import com.sarmad.task.persistence.repository.CarModelRepository;
 import com.sarmad.task.persistence.repository.UserCarRepository;
 import com.sarmad.task.persistence.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UsersCarsServiceImpl implements UserCarsService {
@@ -29,31 +26,31 @@ public class UsersCarsServiceImpl implements UserCarsService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CarModelService carModelService;
 
     @Autowired
     private ModelMapper modelMapper;
 
-
-
-
-
-    @Cacheable(value = "userCars", key = "#userCarsSearchDto.firstName + '-' + #userCarsSearchDto.secondName + '-' + #userCarsSearchDto.carPlateNumber")
-    public List<UserCars> getSpecificUserCars(UserCarsSearchDto userCarsSearchDto) {
+    @Override
+    public AppResponse<List<UserCarsDto>> getSpecificUserCars(UserCarsSearchDto userCarsSearchDto) {
 
         String userId = getUserId(userCarsSearchDto.getFirstName(),userCarsSearchDto.getSecondName());
 
+        List<UserCars> usercars = null;
         if (userCarsSearchDto.getCarPlateNumber() != null) {
-            return userCarRepository.findUserCarsByUserIdAndCarPlateNumber(userId, userCarsSearchDto.getCarPlateNumber());
+            usercars = userCarRepository.findUserCarsByUserIdAndCarPlateNumber(userId, userCarsSearchDto.getCarPlateNumber());
         } else {
-            return userCarRepository.findUserCarsByUserId(userId);
+            usercars = userCarRepository.findUserCarsByUserId(userId);
         }
-    }
-
-    @Override
-    public AppResponse< List<UserCarsDto>> searchUserCars(UserCarsSearchDto userCarsSearchDto) {
-        List<UserCars> userCars = getSpecificUserCars(userCarsSearchDto);
-        List<UserCarsDto> userCarsDtos =mapUserCarsToDtos(userCars);
-        return new AppResponse<>("Return Data Successfully",userCarsDtos);
+        List<UserCarsDto> userCarsDtos = new ArrayList<>();
+        if(usercars != null || !usercars.isEmpty()){
+            for (UserCars userCar : usercars) {
+                userCarsDtos.add(mapUserCarsToDtos(userCar));
+            }
+        }
+        
+        return new AppResponse<List<UserCarsDto>>("Return Data Successfully",userCarsDtos);
     }
 
     private String getUserId(String firstName, String secondName){
@@ -68,11 +65,23 @@ public class UsersCarsServiceImpl implements UserCarsService {
         }
         return users.get(0).getUser_id();
     }
-
-    private List<UserCarsDto> mapUserCarsToDtos(List<UserCars> userCars) {
-        return userCars.stream()
-                .map(userCar -> modelMapper.map(userCar, UserCarsDto.class))
-                .collect(Collectors.toList());
+    
+    private UserCarsDto mapUserCarsToDtos(UserCars userCars){
+        UserCarsDto userCarsDto = new UserCarsDto();
+        userCarsDto.setColor(userCars.getColor());
+        userCarsDto.setCarPlateNumber(userCars.getCarPlateNumber());
+        mapCarModelData(userCars, userCarsDto);
+        return userCarsDto;
+    }
+    
+    private void mapCarModelData(UserCars userCars, UserCarsDto userCarsDto){
+        CarModelDto carModelDto = new CarModelDto();
+        if(carModelService.getCashedCarModelById(userCars.getCarModelId()).isPresent()){
+            carModelDto = carModelService.getCashedCarModelById(userCars.getCarModelId()).get();
+        }
+        userCarsDto.setModelName(carModelDto.getModelName());
+        userCarsDto.setType(carModelDto.getType());
+        userCarsDto.setManufacturerYear(carModelDto.getManufacturerYear());
     }
 
 

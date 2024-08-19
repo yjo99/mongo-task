@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface UserCarsService {
 
-    public AppResponse< List<UserCarsDto>> searchUserCars(UserCarsSearchDto userCarsSearchDto);
+    public AppResponse<List<UserCarsDto>> getSpecificUserCars(UserCarsSearchDto userCarsSearchDto);
 }

@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface CarModelService {
 
-    public Optional<CarModelDto> getCashedCarModel(String id);
+    public Optional<CarModelDto> getCashedCarModelById(String id);
 }

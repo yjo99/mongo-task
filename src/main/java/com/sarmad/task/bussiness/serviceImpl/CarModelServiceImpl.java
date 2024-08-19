@@ -25,7 +25,7 @@ public class CarModelServiceImpl implements CarModelService {
     @Autowired
     private ModelMapper modelMapper;
     @Override
-    public Optional<CarModelDto> getCashedCarModel(String id) {
+    public Optional<CarModelDto> getCashedCarModelById(String id) {
         if(getCarModelCached()==null ||!getCarModelCached().iterator().hasNext()){
             List<CarModel> carModels = getAllCarModelData();
             CacheCarModelDtos(mapUserCarsToDtos(carModels));

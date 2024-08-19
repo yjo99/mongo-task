@@ -9,15 +9,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Setter
 @Getter
 public class UserCarsDto {
-    @Field("user_id")
-    private String userId;
 
-    @Field("car_model_id")
-    private String carModelId;
-
-    @Field("color")
+    private String modelName;
+    private String manufacturerYear;
+    private String type;
     private String color;
-
-    @Field("car_plate_number")
     private String carPlateNumber;
 }
